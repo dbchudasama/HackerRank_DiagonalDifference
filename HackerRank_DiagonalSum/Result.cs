@@ -6,7 +6,7 @@ using static System.Console;
 
 namespace HackerRank_DiagonalSum
 {
-    public class Result
+    public static class Result
     {
         const int MATRIX_MIN_SIZE = 2;
         const int MATRIX_MAX_SIZE = 5;
@@ -89,17 +89,47 @@ namespace HackerRank_DiagonalSum
         }
 
 
-        //  *
+        /// <summary>
+        /// Method to convert list of lists into a 2D Array Matrix
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns>Matrix as 2D Array</returns>
+        public static int[,] ListTo2dArray(List<List<int>> list)
+        {
+            if (list.Count == 0 || list[0].Count == 0)
+                throw new ArgumentException("The list must have non-zero dimensions.");
+
+            // Creating a new 2D Array based on the list count.
+            var result = new int[list.Count, list[0].Count];
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                for (int j = 0; j < list[i].Count; j++)
+                {
+                    if (list[i].Count != list[0].Count)
+                        throw new InvalidOperationException("The list cannot contain elements (lists) of different sizes.");
+                    result[i, j] = list[i][j];
+                }
+            }
+
+            return result;
+        }
+
+
+
+        // *
         // * Complete the 'diagonalDifference' function below.
         // *
         // * The function is expected to return an INTEGER.
         // * The function accepts 2D_INTEGER_ARRAY arr as parameter.
         // */
-        public static int diagonalDifference(int[,] matrix)
+        public static int diagonalDifference(List<List<int>> matrixList)
         {
             IEnumerable<int> pDiagonalValues;
             IEnumerable<int> sDiagonalValues;
 
+            var matrix = ListTo2dArray(matrixList);
+       
             GetDiagonalValues(matrix, out pDiagonalValues, out sDiagonalValues);
 
             //Calculate the absolute Sum of matrix diagonals - LINQ!
